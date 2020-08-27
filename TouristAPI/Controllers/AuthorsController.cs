@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 namespace TouristAPI.Controllers
 {
     [ApiController]
+    [Route("api/authors")]
     public class AuthorsController : ControllerBase
     {
         private readonly ICourseLibraryRepository _courseLibraryRepository;
@@ -21,9 +22,9 @@ namespace TouristAPI.Controllers
         {
             _courseLibraryRepository = courseLibraryRepository ??
                             throw new ArgumentNullException(nameof(courseLibraryRepository));
-        //    _mapper = mapper ??
-        //        throw new ArgumentNullException(nameof(mapper));
-        //
+            //    _mapper = mapper ??
+            //        throw new ArgumentNullException(nameof(mapper));
+            //
         }
 
         /// <summary>
@@ -35,37 +36,36 @@ namespace TouristAPI.Controllers
         /// <returns>The list of authors
         /// </returns>
         /// 
-        [HttpGet("api/authors")]
-        [Produces("application/json")]
+        [HttpGet()]
+        //[Produces("application/json")]
         public IActionResult GetAuthors()
         {
             var authors = _courseLibraryRepository.GetAuthors();
-            return new JsonResult(authors);
+            return Ok(authors);
         }
 
 
-        //    ///<summary>
-        //    ///Get an author by id.
-        //    /// </summary>
-        //    /// <remarks>
-        //    /// Sample request: Get /authors/{id}
-        //    /// </remarks>
-        //    /// <returns>An individual author
-        //    /// </returns>
-        //    [HttpGet("{authorid}")]
-        //    [Produces("application/json")]
-        //    public IActionResult GetAuthor(Guid authorId)
-        //    {
-        //        var author = _courseLibraryRepository.GetAuthor(authorId);
+        ///<summary>
+        ///Get an author by id.
+        /// </summary>
+        /// <remarks>
+        /// Sample request: Get /authors/{id}
+        /// </remarks>
+        /// <returns>An individual author
+        /// </returns>
+        [HttpGet("{authorid}")]
+        //[Produces("application/json")]
+        public IActionResult GetAuthor(Guid authorId)
+        {
+            var author = _courseLibraryRepository.GetAuthor(authorId);
+            
+            if (author == null)
+            {
+                return NotFound();
+            }
 
-        //        if (author == null)
-        //        {
-        //            return NotFound();
-        //        }
+            return Ok(author);
+        }
 
-        //        return Ok(_mapper.Map<AuthorDto>(author));
-        //    }
-
-        //}
     }
 }
