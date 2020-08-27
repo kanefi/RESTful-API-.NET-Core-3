@@ -1,4 +1,4 @@
-﻿//using AutoMapper;
+﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,8 @@ using CourseLibrary.API.Entities;
 using CourseLibrary.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using TouristAPI.Helpers;
+using TouristAPI.Models;
 
 namespace TouristAPI.Controllers
 {
@@ -38,9 +40,24 @@ namespace TouristAPI.Controllers
         /// 
         [HttpGet()]
         //[Produces("application/json")]
-        public IActionResult GetAuthors()
+        public ActionResult<IEnumerable<AuthorDto>> GetAuthors()
         {
-            var authors = _courseLibraryRepository.GetAuthors();
+            var authorsFromRepo = _courseLibraryRepository.GetAuthors();
+            var authors = new List<AuthorDto>();
+
+            foreach (var author in authorsFromRepo)
+            {
+                authors.Add(new AuthorDto()
+                {
+                    Id = author.Id,
+                    Name = $"{author.FirstName} {author.LastName}",
+                    MainCategory = author.MainCategory,
+                    Age = author.DateOfBirth.GetCurrentAge()
+                });
+                ;
+            }
+
+
             return Ok(authors);
         }
 
@@ -58,7 +75,7 @@ namespace TouristAPI.Controllers
         public IActionResult GetAuthor(Guid authorId)
         {
             var author = _courseLibraryRepository.GetAuthor(authorId);
-            
+
             if (author == null)
             {
                 return NotFound();
