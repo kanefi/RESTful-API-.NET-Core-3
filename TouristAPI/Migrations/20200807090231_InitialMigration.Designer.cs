@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TouristAPI.Migrations
 {
     [DbContext(typeof(CourseLibraryContext))]
-    [Migration("20200806140051_InitialMigration")]
+    [Migration("20200807090231_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
