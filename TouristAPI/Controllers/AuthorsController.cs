@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using TouristAPI.Helpers;
 using TouristAPI.Models;
+using TouristAPI.ResourceParameters;
 
 namespace TouristAPI.Controllers
 {
@@ -41,9 +42,10 @@ namespace TouristAPI.Controllers
         [HttpGet()]
         [HttpHead]
         //[Produces("application/json")]
-        public ActionResult<IEnumerable<AuthorDto>> GetAuthors()
+        public ActionResult<IEnumerable<AuthorDto>> GetAuthors(
+            AuthorsResourceParameters authorsResourceParameters)
         {
-            var authorsFromRepo = _courseLibraryRepository.GetAuthors();
+            var authorsFromRepo = _courseLibraryRepository.GetAuthors(authorsResourceParameters);
             
 
             return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo));
